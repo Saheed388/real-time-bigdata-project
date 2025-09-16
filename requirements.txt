@@ -1,0 +1,14 @@
+apache-flink==1.16.0
+requests
+openpyxl
+pandas
+kafka-python
+requests
+confluent-kafka 
+fastavro
+snowflake-connector-python
+snowflake-sqlalchemy   
+sqlalchemy
+pyspark
+python-dotenv
+pyarrow
