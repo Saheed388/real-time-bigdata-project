@@ -99,6 +99,3 @@ spark-submit \
 
  With this pipeline, Reddit data flows in **real-time** from ingestion → processing → warehousing, enabling analytics and insights at scale.
 
----
-
-Would you like me to also **add a diagram (architecture image)** for this README? That usually makes data pipeline projects stand out on GitHub.
