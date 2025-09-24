@@ -1,101 +1,106 @@
-# real-time-bigdata-project
-
-Data Pipeline Project
-This project implements a data pipeline that extracts data from Reddit, processes it, and loads it into a Snowflake data warehouse.
-Overview
-
-Data Source: Reddit data is extracted using a Python script.
-Streaming: Apache Kafka is used to handle the streaming of data from Reddit.
-Processing: Apache Spark processes the data from Kafka and prepares it for the data warehouse.
-Data Warehouse: Snowflake serves as the final destination for the processed data.
-Containerization: The pipeline components (Python script with Kafka and Spark) are deployed using Docker.
-
-Setup and Deployment
-
-Extract Data from Reddit:
-
-A Python script is used to fetch data from Reddit and send it to Kafka.
-The script is containerized using Docker for easy deployment.
-
-
-Kafka Streaming:
-
-Kafka manages the data stream, with partitioning to handle data distribution.
-Deployed within a Docker container.
-
-
-Spark Processing:
-
-Apache Spark processes the Kafka-streamed data and loads it into Snowflake.
-This component is also containerized using Docker.
-
-
-Snowflake Integration:
-
-Processed data is stored in a Snowflake data warehouse.
 
 
 
-Prerequisites
+This project implements a **real-time data pipeline** that extracts data from Reddit, streams it through Apache Kafka, processes it with Apache Spark, and loads it into a **Snowflake** data warehouse. All components are containerized with Docker for easy deployment.
 
-Docker
-Python
-Apache Kafka
-Apache Spark
-Snowflake account
+---
 
-Running the Pipeline
+## Project Overview
 
-Build and run the Docker containers for Kafka and Spark.
-Execute the Python script to start data extraction from Reddit to Kafka.
-Configure Spark to process data from Kafka and load it into Snowflake.
+* **Data Source**: Reddit data extracted with a Python script (via PRAW).
+* **Streaming**: Apache Kafka handles real-time data ingestion.
+* **Processing**: Apache Spark processes and transforms the data.
+* **Data Warehouse**: Processed data is stored in Snowflake.
+* **Containerization**: Each component (Producer, Kafka, Spark Consumer) is deployed using Docker.
 
-Notes
+---
 
-Ensure proper partitioning is configured in Kafka and Spark for optimal performance.
-Check Docker logs for any deployment issues.
+##  Setup and Deployment
 
+### 1. Extract Data from Reddit (Producer)
 
-If having issue connecting to kafka use this to check the port is listining to
+* A Python script fetches Reddit submissions and sends them to Kafka.
+* The script is containerized for reproducible deployment.
 
--- docker exec -it redpanda-1 rpk cluster info
+```bash
+# Build producer image
+docker build -t reddit-kafka-producer .
 
+# Run producer container
+docker run -d --env-file .env --network="host" reddit-kafka-producer
+```
 
-To check the consumer via terminal
+---
 
--- docker exec -it redpanda-1 rpk topic consume reddit-json-stream
+### 2. Kafka Streaming
 
+* Kafka manages the real-time stream, including partitioning for distribution.
+* Example checks:
 
+```bash
+# Check cluster info
+docker exec -it redpanda-1 rpk cluster info  
 
+# Consume topic messages manually
+docker exec -it redpanda-1 rpk topic consume reddit-json-stream  
+```
 
--------
-to check the prefarred dependencies
+---
 
-https://repo1.maven.org/maven2/net/snowflake/spark-snowflake_2.12/
-``````````
+### 3. Spark Processing (Consumer)
 
-To test the consumer before deployment using kafka
--- spark-submit \
+* Apache Spark consumes from Kafka, transforms the data, and loads into Snowflake.
+
+```bash
+# Build consumer image
+docker build -t reddit-spark-consumer .
+
+# Run consumer container
+docker run -d --env-file .env --network="host" reddit-spark-consumer
+```
+
+* Test locally before deploying with Spark submit:
+
+```bash
+spark-submit \
   --packages org.apache.spark:spark-sql-kafka-0-10_2.12:3.5.1,net.snowflake:spark-snowflake_2.12:3.1.3 \
   consumer.py
+```
 
-  docker compose exec flink-jobmanager ./bin/flinks run -py /opt/src/jobs/reddit_top_authors_snowflake.py --pyFiles /opt/src -d
+---
 
-  
+### 4. Snowflake Integration
 
-  Producer Deployment
+* Processed data is stored in **Snowflake** using the [Spark-Snowflake Connector](https://repo1.maven.org/maven2/net/snowflake/spark-snowflake_2.12/).
 
-  --docker build -t reddit-kafka-producer .
+---
 
-Run to see see the log
+##  Tools Documentations
 
---docker run -d --env-file .env --network="host" reddit-kafka-producer
+* [Docker](https://docs.docker.com/)
+* [Python](https://www.python.org/)
+* [Apache Kafka](https://kafka.apache.org/)
+* [Apache Spark](https://spark.apache.org/)
+* [Snowflake account](https://www.snowflake.com/)
 
-To run in background
-  -- docker run -d --env-file .env --network="host" reddit-kafka-producer
+---
 
-Consumer Deployment
+##  Notes
 
-docker build -t reddit-spark-consumer .
-docker run -d --env-file .env --network="host" reddit-spark-consumer
+* Configure **Kafka and Spark partitioning** for optimal performance.
+* Always check Docker container logs if deployment fails.
+* To run jobs in Flink (optional integration):
+
+```bash
+docker compose exec flink-jobmanager \
+  ./bin/flink run \
+  -py /opt/src/jobs/reddit_top_authors_snowflake.py \
+  --pyFiles /opt/src -d
+```
+
+---
+
+ With this pipeline, Reddit data flows in **real-time** from ingestion → processing → warehousing, enabling analytics and insights at scale.
+
+---
 
