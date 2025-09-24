@@ -1,5 +1,8 @@
 
 
+## Architecture  
+
+![Data Pipeline Architecture](2509b85b-c19f-42c8-b739-6834e4ac4b10.gif) 
 
 This project implements a **real-time data pipeline** that extracts data from Reddit, streams it through Apache Kafka, processes it with Apache Spark, and loads it into a **Snowflake** data warehouse. All components are containerized with Docker for easy deployment.
 
