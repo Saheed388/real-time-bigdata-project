@@ -1,6 +1,6 @@
 
 
-## Architecture  
+## Pipeline Architecture  
 
 ![Data Pipeline Architecture](image/reddit_architecture.gif) 
 
