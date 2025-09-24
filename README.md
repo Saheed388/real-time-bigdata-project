@@ -93,14 +93,7 @@ spark-submit \
 
 * Configure **Kafka and Spark partitioning** for optimal performance.
 * Always check Docker container logs if deployment fails.
-* To run jobs in Flink (optional integration):
 
-```bash
-docker compose exec flink-jobmanager \
-  ./bin/flink run \
-  -py /opt/src/jobs/reddit_top_authors_snowflake.py \
-  --pyFiles /opt/src -d
-```
 
 ---
 
