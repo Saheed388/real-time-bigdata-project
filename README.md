@@ -21,7 +21,7 @@ The project implements a **real-time data pipeline** that extracts data from Red
 
 ##  Setup and Deployment
 
-Clone the repo then deploy 
+Clone the repo then deploy Kafka and Spark
 ```bash
 docker comose up -d
 ```
