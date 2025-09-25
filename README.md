@@ -21,10 +21,15 @@ The project implements a **real-time data pipeline** that extracts data from Red
 
 ##  Setup and Deployment
 
+Clone the repo then deploy 
+```bash
+docker comose up -d
+```
 ### 1. Extract Data from Reddit (Producer)
 
 * A Python script fetches Reddit submissions and sends them to Kafka.
 * The script is containerized for reproducible deployment.
+
 
 ```bash
 # Build producer image
