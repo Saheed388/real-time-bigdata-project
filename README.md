@@ -21,8 +21,7 @@ The project implements a **real-time data pipeline** that extracts data from Red
 
 ##  Setup and Deployment
 
-To generate api key
-[generate api key](https://www.reddit.com/prefs/apps)
+[Generate Api Key](https://www.reddit.com/prefs/apps)
 
 Clone the repo then deploy Kafka and Spark
 ```bash
