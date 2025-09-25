@@ -4,8 +4,7 @@ import json
 import praw
 from kafka import KafkaProducer
 from tenacity import retry, stop_after_attempt, wait_exponential
-from dotenv import load_dotenv   # <-- add this
-
+from dotenv import load_dotenv   
 load_dotenv()
 
 # --- Logging Setup ---
@@ -26,7 +25,7 @@ except Exception as e:
     exit(1)
 
 # --- Kafka Configuration ---
-server = 'localhost:9092'  # Adjust if your broker uses a different host/port
+server = 'localhost:9092'  
 topic_name = 'reddit-json-stream'
 client_id = 'kafka-python-producer-1'
 
@@ -88,3 +87,4 @@ def main():
 
 if __name__ == "__main__":
     main()
+
